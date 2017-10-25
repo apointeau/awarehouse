@@ -1,0 +1,11 @@
+# @Author: Antoine Pointeau <kalif>
+# @Date:   2017-10-24T22:17:26+02:00
+# @Email:  web.pointeau@gmail.com
+# @Filename: apoWarehouse.yml
+# @Last modified by:   kalif
+# @Last modified time: 2017-10-25T01:10:52+02:00
+
+storage:
+    - name: Local folder storage
+      type: localFolder
+      path: ./warehouse
