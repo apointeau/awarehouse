@@ -3,8 +3,9 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-30T23:35:21+01:00
+# @Last modified time: 2017-11-08T22:55:06+01:00
 
 from storageFactory import storageFactory
 from storageAbstract import storageError
-from localFolder import localFolder
+from FOLDER import FOLDER
+from SFTP import SFTP

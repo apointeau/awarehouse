@@ -3,4 +3,15 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: warehouse.yml
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-25T00:07:20+02:00
+# @Last modified time: 2017-11-08T23:19:27+01:00
+
+storage:
+    - name: My backup local folder
+      type: FOLDER
+      path: ./warehouse
+
+    - name: My remote server
+      type: SFTP
+      host: rocketknow.com
+      username: kalif
+      path: /home/kalif

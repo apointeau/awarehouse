@@ -3,33 +3,47 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: storageAbstract.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-31T00:33:17+01:00
+# @Last modified time: 2017-11-08T23:08:51+01:00
 
 import abc
 
-class storageError(Excpetion):
+class storageError(Exception):
     pass
 
 class storageAbstract:
     __metaclass__ = abc.ABCMeta
 
+    # READ STORAGE CONTENT #
+
     @abc.abstractmethod
     def exists(self, path): raise NotImplementedError()
 
     @abc.abstractmethod
-    def mkdir(self, path): raise NotImplementedError()
+    def listdir(self, path): raise NotImplementedError()
+
+    # CREATE STORAGE CONTENT #
 
     @abc.abstractmethod
     def touch(self, path): raise NotImplementedError()
 
     @abc.abstractmethod
-    def listdir(self, path): raise NotImplementedError()
+    def makedirs(self, path): raise NotImplementedError()
+
+    # TRANSFER STORAGE CONTENT #
+
+    @abc.abstractmethod
+    def put(self, src, dst): raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(self, src, dst): raise NotImplementedError()
+
+    # MANIPULATE STORAGE CONTENT #
+
+    @abc.abstractmethod
+    def move(self, src, dst): raise NotImplementedError()
+
+    @abc.abstractmethod
+    def copy(self, src, dst): raise NotImplementedError()
 
     @abc.abstractmethod
     def rmtree(self, path): raise NotImplementedError()
-
-    @abc.abstractmethod
-    def move(self, path): raise NotImplementedError()
-
-    @abc.abstractmethod
-    def copy(self, path): raise NotImplementedError()

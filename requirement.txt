@@ -1,1 +1,2 @@
-PyYAML>=3.0
+pyyaml>=3.0
+pysftp>=0.2.9

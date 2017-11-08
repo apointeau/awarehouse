@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: a42_warehouse.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-30T23:32:41+01:00
+# @Last modified time: 2017-11-08T23:18:43+01:00
 
 import argparse
 
@@ -22,6 +22,8 @@ def main():
     parser = getParser()
     args = parser.parse_args()
     awc = AWContext(args.conf)
+    for s in awc.storageList:
+        print(s.listdir("./lol"))
 
 if __name__ == "__main__":
     main()
