@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: SFTP.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-08T23:18:00+01:00
+# @Last modified time: 2017-11-10T00:12:02+01:00
 
 import os
 
@@ -13,19 +13,45 @@ from storageAbstract import storageAbstract, storageError
 
 class SFTP(storageAbstract):
 
+    conn = None
 
-    def __init__(self, path=None, host=None, **kwargs):
-        self.conn = self.__init_sftp_connection(host, **kwargs)
+    def __init__(self, name=None, path=None, host=None, **kwargs):
+        if not name:
+            raise storageError("missing required field 'name'")
+        self.name = name
+
         if not path:
-            raise storageError("field 'path' is missing")
+            raise storageError("missing required field 'path'")
         self.folderPath = path
 
-    pysftpArgs = ["username", "private_key", "password", "port", "private_key_pass"]
-    def __init_sftp_connection(self, host, **kwargs):
+        if not host:
+            raise storageError("missing required field 'host'")
+        self.host = host
+
+        self.kwargs = kwargs
+        self.connect()
+
+
+    def connect(self):
+        if self.connected:
+            raise storageError("storage already connected - unable to connect")
+        pysftpArgs = ["username", "private_key", "password", "port", "private_key_pass"]
         connArgs = {}
-        for key in [k for k in kwargs if k in self.pysftpArgs]:
-            connArgs[key] = kwargs[key]
-        return pysftp.Connection(host, **connArgs)
+        for key in [k for k in self.kwargs if k in pysftpArgs]:
+            connArgs[key] = self.kwargs[key]
+        self.conn = pysftp.Connection(self.host, **connArgs)
+        self.connected = True
+        return self
+
+
+    def disconnect(self):
+        if not self.connected:
+            raise storageError("storage already disconnected - unable to disconnect")
+        self.conn.close()
+        self.conn = None
+        self.connected = False
+        return self
+
 
     def __join(self, path):
         if ".." in path:

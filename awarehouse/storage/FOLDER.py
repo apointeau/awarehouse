@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: FOLDER.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-08T23:17:14+01:00
+# @Last modified time: 2017-11-10T00:31:37+01:00
 
 import os, shutil
 
@@ -11,15 +11,34 @@ from storageAbstract import storageAbstract, storageError
 
 class FOLDER(storageAbstract):
 
-    def __init__(self, path=None, **kwargs):
+    required_fields = [
+        { "field": "path", "type": str },
+    ]
+
+    def __init__(self, name="", path=None, **kwargs):
+        if not name:
+            raise storageError("missing required field 'name'")
+        self.name = name
+
         if not path:
-            raise storageError("field 'path' is missing")
+            raise storageError("missing required field 'path'")
         if not os.path.isdir(path):
             try:
                 os.mkdir(path)
             except:
                 raise storageError("'path' isn't a directory")
         self.folderPath = os.path.abspath(path)
+
+        self.kwargs = kwargs
+        self.connect()
+
+
+    def connect(self):
+        self.connected = True
+
+
+    def disconnect(self):
+        self.connected = False
 
 
     def __join(self, path):

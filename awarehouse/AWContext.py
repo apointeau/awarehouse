@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-31T00:35:38+01:00
+# @Last modified time: 2017-11-10T00:16:13+01:00
 
 from AWConfig import AWConfig
 from storage import storageFactory
@@ -17,16 +17,16 @@ class AWContext:
     the AWarehouse components.
     """
 
-    storageList = []
+    storages = []
 
     def __init__(self, conf=None):
         self.conf = conf if type(conf) == AWConfig else AWConfig(conf)
-        self.__initializeStorage()
+        self.__init_storages()
 
 
-    def __initializeStorage(self):
+    def __init_storages(self):
         if not self.conf.has_key("storage"):
-            raise AWContextError("Configuration - missing field 'storage'")
+            raise AWContextError("Configuration - missing required field 'storage'")
         storageConf = self.conf["storage"]
 
         if not type(storageConf) in [dict, list]:
@@ -38,4 +38,4 @@ class AWContext:
         for elem in storageConf:
             if not type(elem) == dict:
                 raise AWContextError("Configuration - invalid sub-component type in field 'storage'")
-            self.storageList.append(factory.create_storage(**elem))
+            self.storages.append(factory.create_storage(**elem))

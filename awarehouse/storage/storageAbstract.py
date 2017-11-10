@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: storageAbstract.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-08T23:08:51+01:00
+# @Last modified time: 2017-11-10T00:33:28+01:00
 
 import abc
 
@@ -12,6 +12,23 @@ class storageError(Exception):
 
 class storageAbstract:
     __metaclass__ = abc.ABCMeta
+
+    # CLASS PROPERTIES #
+
+    required_fields = None
+
+    # INSTANCE PROPERTIES #
+
+    name = None
+    connected = False
+
+    # STORAGE MANAGEMENT #
+
+    @abc.abstractmethod
+    def connect(self): raise NotImplementedError()
+
+    @abc.abstractmethod
+    def disconnect(self): raise NotImplementedError()
 
     # READ STORAGE CONTENT #
 
