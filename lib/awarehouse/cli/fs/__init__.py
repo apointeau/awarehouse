@@ -3,13 +3,14 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:18:11+01:00
+# @Last modified time: 2017-11-16T22:33:39+01:00
 
 import sys
 import argparse
 
 import ls
 import touch
+import makedirs
 
 
 def call_handler(awc, args):
@@ -20,6 +21,7 @@ def call_handler(awc, args):
 
     ls.create_sub_parser(subparsers)
     touch.create_sub_parser(subparsers)
+    makedirs.create_sub_parser(subparsers)
 
     sub_args = parser.parse_args(args.SUB_ARGS)
     sub_args.handler(awc, sub_args)

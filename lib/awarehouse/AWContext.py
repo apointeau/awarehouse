@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:22:11+01:00
+# @Last modified time: 2017-11-16T22:30:49+01:00
 
 from AWConfig import AWConfig
 from storage import storageFactory
@@ -26,7 +26,7 @@ class AWContext:
         self.__init_storages()
 
     def __init_storages(self):
-        if "storage" not in self.conf:
+        if  not self.conf.has_key("storage"):
             raise AWContextError("Configuration - missing required field 'storage'")
         storageConf = self.conf["storage"]
 
@@ -65,3 +65,7 @@ class AWContext:
     def touch(self, path):
         for s in self.storages:
             s.touch(path)
+
+    def makedirs(self, path):
+        for s in self.storages:
+            s.makedirs(path)

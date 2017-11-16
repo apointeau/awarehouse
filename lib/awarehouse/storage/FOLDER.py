@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: FOLDER.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T00:07:02+01:00
+# @Last modified time: 2017-11-16T22:31:43+01:00
 
 import os
 import shutil
@@ -62,7 +62,7 @@ class FOLDER(storageAbstract):
         open(self.__join(path), 'a').close()
 
     def makedirs(self, path):
-        return os.path.makedirs(self.__join(path))
+        return os.makedirs(self.__join(path))
 
     # TRANSFER STORAGE CONTENT #
 

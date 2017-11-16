@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWConfig.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-15T22:45:31+01:00
+# @Last modified time: 2017-11-16T22:24:23+01:00
 
 
 import os
@@ -40,7 +40,7 @@ class AWConfig:
                         raise Exception("Unable to find awarehouse configuration file")
 
     def __getitem__(self, key):
-        return self.conf[key]
+        return self.conf.__getitem__(key)
 
     def has_key(self, key):
         return (key in self.conf)
