@@ -5,14 +5,16 @@
 # @Last modified by:   kalif
 # @Last modified time: 2017-11-16T00:07:02+01:00
 
-import os, shutil
+import os
+import shutil
 
 from storageAbstract import storageAbstract, storageError
+
 
 class FOLDER(storageAbstract):
 
     required_fields = [
-        { "field": "path", "type": str },
+        {"field": "path", "type": str},
     ]
 
     def __init__(self, path=None, **kwargs):
@@ -30,14 +32,11 @@ class FOLDER(storageAbstract):
         self.kwargs = kwargs
         self.connect()
 
-
     def connect(self):
         self.connected = True
 
-
     def disconnect(self):
         self.connected = False
-
 
     def __join(self, path):
         if ".." in path:

@@ -14,10 +14,10 @@ if sys.version_info.major == 2:
 
 def get_field(dname, optional=False, choices=None):
     res = input("{0}: ".format(dname))
-    if res == "" and not optionnal:
+    if res == "" and not optional:
         print("error: empty answer, this field is required".format(dname))
         return get_field(dname, choices=choices)
-    if choices and not res in choices:
+    if choices and res not in choices:
         print("error: invalid choice: '{}' (choose from {})".format(res, ', '.join(choices)))
         return get_field(dname, choices=choices)
     return res

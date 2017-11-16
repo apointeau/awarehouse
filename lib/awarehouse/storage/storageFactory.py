@@ -7,10 +7,11 @@
 
 import importlib
 
+
 class storageFactory:
 
     def create_storage(self, **kwargs):
-        if not kwargs.has_key("type"):
+        if "type" not in kwargs:
             raise Exception("Unable to build storage without type")
         t = str(kwargs["type"])
         try:

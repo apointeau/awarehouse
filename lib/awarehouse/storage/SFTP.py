@@ -11,6 +11,7 @@ import pysftp
 
 from storageAbstract import storageAbstract, storageError
 
+
 class SFTP(storageAbstract):
 
     conn = None
@@ -29,7 +30,6 @@ class SFTP(storageAbstract):
         self.kwargs = kwargs
         self.connect()
 
-
     def connect(self):
         if self.connected:
             raise storageError("storage already connected - unable to connect")
@@ -45,7 +45,6 @@ class SFTP(storageAbstract):
         self.connected = True
         return self
 
-
     def disconnect(self):
         if not self.connected:
             raise storageError("storage already disconnected - unable to disconnect")
@@ -53,7 +52,6 @@ class SFTP(storageAbstract):
         self.conn = None
         self.connected = False
         return self
-
 
     def __join(self, path):
         if ".." in path:

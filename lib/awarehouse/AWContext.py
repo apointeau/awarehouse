@@ -8,8 +8,10 @@
 from AWConfig import AWConfig
 from storage import storageFactory
 
+
 class AWContextError(Exception):
     pass
+
 
 class AWContext:
     """
@@ -23,10 +25,8 @@ class AWContext:
         self.conf = conf if type(conf) == AWConfig else AWConfig(conf)
         self.__init_storages()
 
-
-
     def __init_storages(self):
-        if not self.conf.has_key("storage"):
+        if "storage" not in self.conf:
             raise AWContextError("Configuration - missing required field 'storage'")
         storageConf = self.conf["storage"]
 

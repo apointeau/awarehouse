@@ -7,7 +7,7 @@
 
 
 def myprint(awc, args, dir, name):
-    if args.is_opt_l: # TODO
+    if args.is_opt_l:  # TODO
         print("  {0}".format(name))
     else:
         print("  {0}".format(name))
@@ -22,6 +22,7 @@ def call_handler(awc, args):
         for name in dirContent:
             myprint(awc, args, path, name)
         print("")
+
 
 def create_sub_parser(subparsers):
     msg = (

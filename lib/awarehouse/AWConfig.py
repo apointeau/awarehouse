@@ -5,9 +5,11 @@
 # @Last modified by:   kalif
 # @Last modified time: 2017-11-15T22:45:31+01:00
 
-import os, copy
+
+import os
 
 import yaml
+
 
 class AWConfig:
 
@@ -37,9 +39,11 @@ class AWConfig:
                     except:
                         raise Exception("Unable to find awarehouse configuration file")
 
+    def __getitem__(self, key):
+        return self.conf[key]
 
-    def __getitem__(self, key): return self.conf[key]
-    def has_key(self, key): return self.conf.has_key(key)
+    def has_key(self, key):
+        return (key in self.conf)
 
     def loadFileYaml(self, filePath):
         with open(filePath, "r") as fd:

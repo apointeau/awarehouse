@@ -7,8 +7,10 @@
 
 import abc
 
+
 class storageError(Exception):
     pass
+
 
 class storageAbstract:
     __metaclass__ = abc.ABCMeta
@@ -32,42 +34,53 @@ class storageAbstract:
     # STORAGE MANAGEMENT #
 
     @abc.abstractmethod
-    def connect(self): raise NotImplementedError()
+    def connect(self):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def disconnect(self): raise NotImplementedError()
+    def disconnect(self):
+        raise NotImplementedError()
 
     # READ STORAGE CONTENT #
 
     @abc.abstractmethod
-    def exists(self, path): raise NotImplementedError()
+    def exists(self, path):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def listdir(self, path): raise NotImplementedError()
+    def listdir(self, path):
+        raise NotImplementedError()
 
     # CREATE STORAGE CONTENT #
 
     @abc.abstractmethod
-    def touch(self, path): raise NotImplementedError()
+    def touch(self, path):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def makedirs(self, path): raise NotImplementedError()
+    def makedirs(self, path):
+        raise NotImplementedError()
 
     # TRANSFER STORAGE CONTENT #
 
     @abc.abstractmethod
-    def put(self, src, dst): raise NotImplementedError()
+    def put(self, src, dst):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, src, dst): raise NotImplementedError()
+    def get(self, src, dst):
+        raise NotImplementedError()
 
     # MANIPULATE STORAGE CONTENT #
 
     @abc.abstractmethod
-    def move(self, src, dst): raise NotImplementedError()
+    def move(self, src, dst):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def copy(self, src, dst): raise NotImplementedError()
+    def copy(self, src, dst):
+        raise NotImplementedError()
 
     @abc.abstractmethod
-    def rmtree(self, path): raise NotImplementedError()
+    def rmtree(self, path):
+        raise NotImplementedError()
