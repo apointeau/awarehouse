@@ -5,7 +5,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: a42_warehouse.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-09T23:46:10+01:00
+# @Last modified time: 2017-11-16T01:01:23+01:00
 
 import os
 import sys
@@ -14,24 +14,24 @@ import argparse
 from awarehouse import AWContext
 from awarehouse import cli
 
+
 def create_parser():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    cparser = subparsers.add_parser("config", help="config help")
-    cli.config.create_sub_parser(cparser)
-
-    sparser = subparsers.add_parser("storage", help="storage help")
-    cli.storage.create_sub_parser(sparser)
+    cli.fs.create_sub_parser(subparsers)
+    cli.storage.create_sub_parser(subparsers)
 
     return parser
 
 
 def main():
     parser = create_parser()
+    if len(sys.argv) > 2:
+        sys.argv.insert(2, '--')
     args = parser.parse_args()
-    awc = AWContext(os.environ.get("AWAREHOUSE_CONF", None))
-    args.func(awc, args)
+    awc = AWContext()
+    return args.handler(awc, args)
 
 if __name__ == "__main__":
     main()

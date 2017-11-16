@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: FOLDER.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-10T00:31:37+01:00
+# @Last modified time: 2017-11-16T00:07:02+01:00
 
 import os, shutil
 
@@ -15,10 +15,8 @@ class FOLDER(storageAbstract):
         { "field": "path", "type": str },
     ]
 
-    def __init__(self, name="", path=None, **kwargs):
-        if not name:
-            raise storageError("missing required field 'name'")
-        self.name = name
+    def __init__(self, path=None, **kwargs):
+        super(FOLDER, self).__init__(**kwargs)
 
         if not path:
             raise storageError("missing required field 'path'")

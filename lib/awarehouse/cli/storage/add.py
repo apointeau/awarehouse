@@ -1,22 +1,15 @@
 # @Author: Antoine Pointeau <kalif>
-# @Date:   2017-11-09T22:49:05+01:00
+# @Date:   2017-11-15T23:33:59+01:00
 # @Email:  web.pointeau@gmail.com
-# @Filename: storage.py
+# @Filename: add.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-10T01:16:12+01:00
+# @Last modified time: 2017-11-16T01:49:05+01:00
 
 import sys
 import readline
 
 if sys.version_info.major == 2:
     input = raw_input
-
-
-def command_list(awc, args):
-    for s in awc.storages:
-        print("Name:   {0}".format(s.name))
-        print("Status: {0}".format("connected" if s.connected else "disconnected"))
-        print("")
 
 
 def get_field(dname, optional=False, choices=None):
@@ -30,7 +23,7 @@ def get_field(dname, optional=False, choices=None):
     return res
 
 
-def command_add(awc, args):
+def call_handler(awc, args):
     print("Welcome to the storage prompt builder !")
     print("- please fill the following fields -\n")
     typeChoices = ["FOLDER", "SFTP"]
@@ -40,15 +33,13 @@ def command_add(awc, args):
     }
 
 
-def commands_router(awc, args):
-    if args.list:
-        command_list(awc, args)
-    elif args.add:
-        command_add(awc, args)
-
-
-def create_sub_parser(subParser):
-    subParser.set_defaults(func=commands_router)
-    group = subParser.add_mutually_exclusive_group()
-    group.add_argument("--list", action="store_true", help="print all the current storages")
-    group.add_argument("--add", action="store_true", help="run the storage prompt builder")
+def create_sub_parser(subparsers):
+    msg = (
+        "add help"
+    )
+    sp = subparsers.add_parser(
+        "add",
+        description=msg,
+        help=msg
+    )
+    sp.set_defaults(handler=call_handler)

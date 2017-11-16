@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: SFTP.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-10T00:12:02+01:00
+# @Last modified time: 2017-11-16T01:56:30+01:00
 
 import os
 
@@ -15,10 +15,8 @@ class SFTP(storageAbstract):
 
     conn = None
 
-    def __init__(self, name=None, path=None, host=None, **kwargs):
-        if not name:
-            raise storageError("missing required field 'name'")
-        self.name = name
+    def __init__(self, path=None, host=None, **kwargs):
+        super(SFTP, self).__init__(**kwargs)
 
         if not path:
             raise storageError("missing required field 'path'")
@@ -40,6 +38,10 @@ class SFTP(storageAbstract):
         for key in [k for k in self.kwargs if k in pysftpArgs]:
             connArgs[key] = self.kwargs[key]
         self.conn = pysftp.Connection(self.host, **connArgs)
+        try:
+            self.conn.makedirs(self.folderPath)
+        except:
+            pass
         self.connected = True
         return self
 

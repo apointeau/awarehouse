@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-10T00:16:13+01:00
+# @Last modified time: 2017-11-16T01:22:11+01:00
 
 from AWConfig import AWConfig
 from storage import storageFactory
@@ -24,6 +24,7 @@ class AWContext:
         self.__init_storages()
 
 
+
     def __init_storages(self):
         if not self.conf.has_key("storage"):
             raise AWContextError("Configuration - missing required field 'storage'")
@@ -39,3 +40,28 @@ class AWContext:
             if not type(elem) == dict:
                 raise AWContextError("Configuration - invalid sub-component type in field 'storage'")
             self.storages.append(factory.create_storage(**elem))
+        if len(self.masters) == 0:
+            raise AWContextError("No storage with the role 'Master' found")
+
+    @property
+    def _storage(self):
+        return self.masters[0]
+
+    @property
+    def masters(self):
+        return [s for s in self.storages if s.role == "Master"]
+
+    @property
+    def slaves(self):
+        return [s for s in self.storages if s.role == "Slaves"]
+
+    # READ STORAGE CONTENT #
+
+    def listdir(self, path):
+        return self._storage.listdir(path)
+
+    # CREATE STORAGE CONTENT #
+
+    def touch(self, path):
+        for s in self.storages:
+            s.touch(path)

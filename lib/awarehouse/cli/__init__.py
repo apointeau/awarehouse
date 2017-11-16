@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-09T23:04:16+01:00
+# @Last modified time: 2017-11-15T23:40:45+01:00
 
-import config
+import fs
 import storage

@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: storageAbstract.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-10T00:33:28+01:00
+# @Last modified time: 2017-11-16T00:10:06+01:00
 
 import abc
 
@@ -19,8 +19,15 @@ class storageAbstract:
 
     # INSTANCE PROPERTIES #
 
-    name = None
     connected = False
+
+    def __init__(self, name=None, role=None, **kwargs):
+        if not name:
+            raise storageError("missing required field 'name'")
+        self.name = name
+        if not role:
+            raise storageError("missing required field 'role'")
+        self.role = role.capitalize()
 
     # STORAGE MANAGEMENT #
 

@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWConfig.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-09T23:27:57+01:00
+# @Last modified time: 2017-11-15T22:45:31+01:00
 
 import os, copy
 
@@ -14,7 +14,9 @@ class AWConfig:
     conf = {}
 
     def __init__(self, configPath=None):
-        # Try loading the given configuration file if given
+        # Try getting the environment variable if configPath not given
+        configPath = configPath if configPath else os.environ.get("AWAREHOUSE_CONF", None)
+        # Try loading the configuration file
         if configPath and not configPath == "":
             self.loadFileYaml(configPath)
         else:
