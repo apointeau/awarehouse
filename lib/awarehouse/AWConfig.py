@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWConfig.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T22:24:23+01:00
+# @Last modified time: 2017-11-17T00:54:39+01:00
 
 
 import os
@@ -11,41 +11,105 @@ import os
 import yaml
 
 
+class AWConfigError(Exception):
+    pass
+
+
 class AWConfig:
 
     conf = {}
 
-    def __init__(self, configPath=None):
+    def __init__(self, path=None):
         # Try getting the environment variable if configPath not given
-        configPath = configPath if configPath else os.environ.get("AWAREHOUSE_CONF", None)
+        self.path = path if path else os.environ.get("AWAREHOUSE_CONF", None)
+        self.path = self.path if self.path is not "" else None
         # Try loading the configuration file
-        if configPath and not configPath == "":
-            self.loadFileYaml(configPath)
+        if self.path:
+            self.load(path)
         else:
             # Try loading the current working directory configuration file
             cwdConfig = os.path.join(os.getcwd(), "warehouse.yml")
             try:
-                self.loadFileYaml(cwdConfig)
+                self.load(cwdConfig)
             except:
                 # Try loading the system default configuration file
                 systemDefault = "/etc/AWarehouse/warehouse.yml"
                 try:
-                    self.loadFileYaml(systemDefault)
+                    self.load(systemDefault)
                 except:
                     # Try loading the module default configuration file
                     moduleDefault = os.path.join(os.path.dirname(__file__), "warehouse.yml")
                     try:
-                        self.loadFileYaml(moduleDefault)
+                        self.load(moduleDefault)
                     except:
                         raise Exception("Unable to find awarehouse configuration file")
 
     def __getitem__(self, key):
         return self.conf.__getitem__(key)
 
+    def __iter__(self):
+        for key in self.conf:
+            yield key
+
     def has_key(self, key):
         return (key in self.conf)
 
-    def loadFileYaml(self, filePath):
+    # LOAD / SAVE #
+
+    def load(self, filePath, fileType="yaml"):
         with open(filePath, "r") as fd:
-            self.conf = yaml.load(fd.read())
+            if fileType == "yaml":
+                self.conf = yaml.load(fd.read())
+            else:
+                raise NotImplementedError()
+        if not self.conf:
+            self.conf = {}
+        if type(self.conf) is not dict:
+            raise AWConfigError("invalid configuration type, expect dict")
         return self
+
+    def save(self, filePath=None, fileType="yaml", append=False):
+        mode = "a" if append else "w"
+        with open(filePath, mode) as fd:
+            if fileType == "yaml":
+                self.conf = fd.write(yaml.dump(self.conf))
+            else:
+                raise NotImplementedError()
+        return self
+
+    # VALIDATION #
+
+    def _validate_key(self, field, dictionary, key, isList=False):
+
+        if key not in dictionary:
+            sc = "sub-component " if isList else ""
+            raise AWConfigError(
+                "field '{0}', missing {1}required key '{2}'"
+                .format(field, sc, key)
+            )
+
+    def validate_storage(self):
+        if "storage" not in self.conf:
+            raise AWConfigError("missing required field 'storage'")
+        if not type(self.conf["storage"]) in [dict, list]:
+            raise AWConfigError("field 'storage', invalid type, expect list or dict")
+        if type(self.conf["storage"]) == dict:
+            self.conf["storage"] = [self.conf["storage"]]
+        closeList = []
+        countMaster = 0
+        for s in self.conf["storage"]:
+            if not type(s) == dict:
+                raise AWConfigError("field 'storage', invalid sub-component type, expect dict")
+
+            for k in ["name", "type", "role"]:
+                self._validate_key("storage", s, k, isList=True)
+
+            if s["name"] in closeList:
+                raise AWConfigError("field 'storage', duplicate entry name '{0}'".format(s["name"]))
+            closeList.append(s["name"])
+
+            if s["role"].lower() == "master":
+                countMaster += 1
+
+        if countMaster == 0:
+            raise AWConfigError("field 'storage', require at least 1 master role")

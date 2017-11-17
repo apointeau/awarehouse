@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T22:30:49+01:00
+# @Last modified time: 2017-11-17T00:24:52+01:00
 
 from AWConfig import AWConfig
 from storage import storageFactory
@@ -26,27 +26,17 @@ class AWContext:
         self.__init_storages()
 
     def __init_storages(self):
-        if  not self.conf.has_key("storage"):
-            raise AWContextError("Configuration - missing required field 'storage'")
-        storageConf = self.conf["storage"]
-
-        if not type(storageConf) in [dict, list]:
-            raise AWContextError("Configuration - invalid field type 'storage'")
-
-        if type(storageConf) == dict:
-            storageConf = [storageConf]
+        self.conf.validate_storage()
         factory = storageFactory()
-        for elem in storageConf:
+
+        for elem in self.conf["storage"]:
             if not type(elem) == dict:
                 raise AWContextError("Configuration - invalid sub-component type in field 'storage'")
             self.storages.append(factory.create_storage(**elem))
         if len(self.masters) == 0:
             raise AWContextError("No storage with the role 'Master' found")
 
-    @property
-    def _storage(self):
-        return self.masters[0]
-
+    # STORAGE MANAGMENT #
     @property
     def masters(self):
         return [s for s in self.storages if s.role == "Master"]
@@ -55,10 +45,18 @@ class AWContext:
     def slaves(self):
         return [s for s in self.storages if s.role == "Slaves"]
 
+
+
+    @property
+    def _connected_master(self):
+        return [s for s in self.masters if s.connected]
+
+
+
     # READ STORAGE CONTENT #
 
     def listdir(self, path):
-        return self._storage.listdir(path)
+        return self._connected_master.listdir(path)
 
     # CREATE STORAGE CONTENT #
 

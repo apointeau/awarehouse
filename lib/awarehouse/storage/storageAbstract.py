@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: storageAbstract.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T00:10:06+01:00
+# @Last modified time: 2017-11-16T23:11:57+01:00
 
 import abc
 

@@ -3,12 +3,12 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:30:37+01:00
+# @Last modified time: 2017-11-16T23:55:18+01:00
 
 import sys
 import argparse
 
-import add
+import connect
 import info
 
 
@@ -18,7 +18,7 @@ def call_handler(awc, args):
     )
     subparsers = parser.add_subparsers()
 
-    add.create_sub_parser(subparsers)
+    connect.create_sub_parser(subparsers)
     info.create_sub_parser(subparsers)
 
     sub_args = parser.parse_args(args.SUB_ARGS)

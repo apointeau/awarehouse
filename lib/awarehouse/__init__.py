@@ -3,9 +3,9 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-10-25T00:58:28+02:00
+# @Last modified time: 2017-11-17T00:16:21+01:00
 
 __version__ = '0.1.0'
 
-from .AWConfig import AWConfig
-from .AWContext import AWContext, AWContextError
+from AWConfig import AWConfig, AWConfigError
+from AWContext import AWContext, AWContextError

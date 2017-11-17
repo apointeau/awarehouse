@@ -3,10 +3,18 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: apoWarehouse.yml
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T00:10:59+01:00
+# @Last modified time: 2017-11-17T00:56:17+01:00
 
 storage:
-    - name: Local folder storage
-      type: localFolder
-      role: master
+
+    - name: MyLocalFolder
+      type: FOLDER
+      role: slave
+      path: ./warehouse
+
+    - name: MyRemoteFolder
+      type: SFTP
+      role: slave
+      host: rocketknow.com
+      username: kalif
       path: ./warehouse

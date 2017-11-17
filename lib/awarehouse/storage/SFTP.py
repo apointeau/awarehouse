@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: SFTP.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:56:30+01:00
+# @Last modified time: 2017-11-16T23:12:11+01:00
 
 import os
 
@@ -14,40 +14,55 @@ from storageAbstract import storageAbstract, storageError
 
 class SFTP(storageAbstract):
 
-    conn = None
+    """
+    This class provides SFTP connector folowing the `storageAbstract` design.
+    """
 
     def __init__(self, path=None, host=None, **kwargs):
         super(SFTP, self).__init__(**kwargs)
 
         if not path:
             raise storageError("missing required field 'path'")
-        self.folderPath = path
+        self.rootPath = path
 
         if not host:
             raise storageError("missing required field 'host'")
         self.host = host
 
-        self.kwargs = kwargs
-        self.connect()
-
-    def connect(self):
-        if self.connected:
-            raise storageError("storage already connected - unable to connect")
-        pysftpArgs = ["username", "private_key", "password", "port", "private_key_pass"]
-        connArgs = {}
-        for key in [k for k in self.kwargs if k in pysftpArgs]:
-            connArgs[key] = self.kwargs[key]
-        self.conn = pysftp.Connection(self.host, **connArgs)
+        self.params = kwargs
         try:
-            self.conn.makedirs(self.folderPath)
+            self.connect()
         except:
             pass
+
+    def connect(self):
+        """
+        Method that try to instanciate an SFTP connection. This function will
+        raise an Exception if the connection couldn't start.
+        """
+        if self.connected:
+            raise storageError("storage already connected")
+        allowedArgs = [
+            "port",
+            "username",
+            "password",
+            "private_key",
+            "private_key_pass"
+        ]
+        filteredArgs = {}
+        for key in [k for k in self.params if k in allowedArgs]:
+            filteredArgs[key] = self.params[key]
+        self.conn = pysftp.Connection(self.host, **filteredArgs)
+        self.conn.makedirs(self.rootPath)
         self.connected = True
         return self
 
     def disconnect(self):
+        """
+        Method that close the current SFTP connection and free the context.
+        """
         if not self.connected:
-            raise storageError("storage already disconnected - unable to disconnect")
+            raise storageError("storage already disconnected")
         self.conn.close()
         self.conn = None
         self.connected = False
@@ -58,7 +73,7 @@ class SFTP(storageAbstract):
             raise storageError("path contains '..', operation not permitted")
         if path[0] == "/":
             path = "." + path
-        return os.path.join(self.folderPath, path)
+        return os.path.join(self.rootPath, path)
 
     # READ STORAGE CONTENT #
 
