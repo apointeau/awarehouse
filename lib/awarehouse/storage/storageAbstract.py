@@ -51,6 +51,10 @@ class storageAbstract:
     def listdir(self, path):
         raise NotImplementedError()
 
+    @abc.abstractmethod
+    def isdir(self, path):
+        raise NotImplementedError()
+
     # CREATE STORAGE CONTENT #
 
     @abc.abstractmethod

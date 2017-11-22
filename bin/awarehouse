@@ -5,7 +5,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: a42_warehouse.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:01:23+01:00
+# @Last modified time: 2017-11-23T00:51:31+01:00
 
 import sys
 import argparse
@@ -18,7 +18,8 @@ def create_parser():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    cli.fs.create_sub_parser(subparsers)
+    cli.afs.create_sub_parser(subparsers)
+    cli.cleaner.create_sub_parser(subparsers)
     cli.storage.create_sub_parser(subparsers)
 
     return parser

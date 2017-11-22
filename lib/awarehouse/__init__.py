@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: __init__.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-17T00:16:21+01:00
+# @Last modified time: 2017-11-23T00:51:21+01:00
 
 __version__ = '0.1.0'
 

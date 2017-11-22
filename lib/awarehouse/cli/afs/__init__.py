@@ -15,7 +15,7 @@ import makedirs
 
 def call_handler(awc, args):
     parser = argparse.ArgumentParser(
-        prog="{0} {1}".format(sys.argv[0], "fs")
+        prog="{0} {1}".format(sys.argv[0], "afs")
     )
     subparsers = parser.add_subparsers()
 
@@ -29,8 +29,8 @@ def call_handler(awc, args):
 
 def create_sub_parser(subparsers):
     sp = subparsers.add_parser(
-        "fs",
-        help="file system help"
+        "afs",
+        help="awarehouse file system help"
     )
     sp.set_defaults(handler=call_handler)
     sp.add_argument('SUB_ARGS', nargs='*')

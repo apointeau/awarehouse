@@ -3,18 +3,22 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: warehouse.yml
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-17T00:59:21+01:00
+# @Last modified time: 2017-11-23T00:45:04+01:00
 
 storage:
 
     - name: MyLocalFolder
       type: FOLDER
-      role: master
+      role: slave
       path: ./warehouse
 
     - name: MyRemoteFolder
       type: SFTP
-      role: slave
+      role: master
       host: rocketknow.com
       username: kalif
       path: ./warehouse
+
+lookup:
+
+    - /home/kalif/Downloads

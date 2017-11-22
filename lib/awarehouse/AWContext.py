@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-17T00:24:52+01:00
+# @Last modified time: 2017-11-23T00:51:15+01:00
 
 from AWConfig import AWConfig
 from storage import storageFactory
@@ -45,18 +45,22 @@ class AWContext:
     def slaves(self):
         return [s for s in self.storages if s.role == "Slaves"]
 
-
-
     @property
     def _connected_master(self):
-        return [s for s in self.masters if s.connected]
+        return [s for s in self.masters if s.connected][0]
 
 
 
     # READ STORAGE CONTENT #
 
+    def exists(self, path):
+        return self._connected_master.exists(path)
+
     def listdir(self, path):
         return self._connected_master.listdir(path)
+
+    def isdir(self, path):
+        return self._connected_master.isdir(path)
 
     # CREATE STORAGE CONTENT #
 

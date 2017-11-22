@@ -83,6 +83,9 @@ class SFTP(storageAbstract):
     def listdir(self, path):
         return self.conn.listdir(self.__join(path))
 
+    def isdir(self, path):
+        return self.conn.isdir(self.__join(path))
+
     # CREATE STORAGE CONTENT #
 
     def touch(self, path):

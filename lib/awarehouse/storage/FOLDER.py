@@ -56,6 +56,9 @@ class FOLDER(storageAbstract):
     def listdir(self, path):
         return os.listdir(self.__join(path))
 
+    def isdir(self, path):
+        return os.path.isdir(self.__join(path))
+
     # CREATE STORAGE CONTENT #
 
     def touch(self, path):

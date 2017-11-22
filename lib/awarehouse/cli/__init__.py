@@ -5,5 +5,6 @@
 # @Last modified by:   kalif
 # @Last modified time: 2017-11-15T23:40:45+01:00
 
-import fs
+import afs
+import cleaner
 import storage
