@@ -9,7 +9,7 @@ import os
 
 import pysftp
 
-from storageAbstract import storageAbstract, storageError
+from .storageAbstract import storageAbstract, storageError
 
 
 class SFTP(storageAbstract):

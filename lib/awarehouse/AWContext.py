@@ -5,8 +5,8 @@
 # @Last modified by:   kalif
 # @Last modified time: 2017-11-23T00:51:15+01:00
 
-from AWConfig import AWConfig
-from storage import storageFactory
+from .AWConfig import AWConfig
+from .storage import storageFactory
 
 
 class AWContextError(Exception):
