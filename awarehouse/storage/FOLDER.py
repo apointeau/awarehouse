@@ -8,7 +8,7 @@
 import os
 import shutil
 
-from storageAbstract import storageAbstract, storageError
+from .storageAbstract import storageAbstract, storageError
 
 
 class FOLDER(storageAbstract):

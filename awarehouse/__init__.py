@@ -7,5 +7,5 @@
 
 __version__ = '0.1.0'
 
-from AWConfig import AWConfig, AWConfigError
-from AWContext import AWContext, AWContextError
+from .AWConfig import AWConfig, AWConfigError
+from .AWContext import AWContext, AWContextError

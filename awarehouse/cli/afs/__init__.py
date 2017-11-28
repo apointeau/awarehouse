@@ -8,9 +8,9 @@
 import sys
 import argparse
 
-import ls
-import touch
-import makedirs
+from awarehouse.cli.afs import ls
+from awarehouse.cli.afs import touch
+from awarehouse.cli.afs import makedirs
 
 
 def call_handler(awc, args):

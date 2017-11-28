@@ -8,8 +8,8 @@
 import sys
 import argparse
 
-import connect
-import info
+from . import connect
+from . import info
 
 
 def call_handler(awc, args):
