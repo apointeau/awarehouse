@@ -5,20 +5,25 @@ from awarehouse import __version__
 
 PACKAGE_NAME = "awarehouse"
 
+with open('README.rst') as f:
+    README = f.read()
+
+
 setup(
     name=PACKAGE_NAME,
     version=__version__,
     license="GNU GENERAL PUBLIC LICENSE V3",
-    url="",
-    download_url="",
+    url="https://github.com/apointeau/awarehouse",
+    download_url="https://github.com/apointeau/awarehouse.git",
     author="Antoine POINTEAU",
-    author_email="web.pointeau at gmail dot com",
+    author_email="web.pointeau@gmail.com",
     description="",
-    packages=find_packages(exclude=["tests", "docs"]),
-    keywords=['file manager', ''],
+    long_description=README,
+    packages=find_packages(),
     entry_points={
         'console_scripts': [
             'awarehouse = awarehouse.cli.__main__:main'
         ]
     },
+    zip_safe=False
 )
