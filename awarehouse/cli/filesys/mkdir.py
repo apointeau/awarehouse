@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: makedirs.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T22:29:38+01:00
+# @Last modified time: 2017-12-13T01:30:36+01:00
 
 
 def call_handler(awc, args):
@@ -13,10 +13,10 @@ def call_handler(awc, args):
 
 def create_sub_parser(subparsers):
     msg = (
-        "makedirs help"
+        "mkdir help"
     )
     sp = subparsers.add_parser(
-        "makedirs",
+        "mkdir",
         description=msg,
         help=msg
     )

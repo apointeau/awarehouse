@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: storageAbstract.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T23:11:57+01:00
+# @Last modified time: 2017-12-13T01:00:57+01:00
 
 import abc
 
@@ -83,6 +83,10 @@ class storageAbstract:
 
     @abc.abstractmethod
     def copy(self, src, dst):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def rm(self, path):
         raise NotImplementedError()
 
     @abc.abstractmethod

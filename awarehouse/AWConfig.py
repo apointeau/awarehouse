@@ -31,18 +31,8 @@ class AWConfig:
             cwdConfig = os.path.join(os.getcwd(), "warehouse.yml")
             try:
                 self.load(cwdConfig)
-            except:
-                # Try loading the system default configuration file
-                systemDefault = "/etc/AWarehouse/warehouse.yml"
-                try:
-                    self.load(systemDefault)
-                except:
-                    # Try loading the module default configuration file
-                    moduleDefault = os.path.join(os.path.dirname(__file__), "warehouse.yml")
-                    try:
-                        self.load(moduleDefault)
-                    except:
-                        raise Exception("Unable to find awarehouse configuration file")
+            except Exception:
+                raise AWConfigError("Unable to find configuration file")
 
     def __getitem__(self, key):
         return self.conf.__getitem__(key)
@@ -110,6 +100,7 @@ class AWConfig:
 
             if s["role"].lower() == "master":
                 countMaster += 1
-
         if countMaster == 0:
-            raise AWConfigError("field 'storage', require at least 1 master role")
+            raise AWConfigError("field 'storage', require 1 master role")
+        elif countMaster > 1:
+            raise AWConfigError("field 'storage', more than 1 master role")

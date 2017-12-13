@@ -6,12 +6,10 @@
 # @Last modified time: 2017-11-23T00:45:04+01:00
 
 storage:
-
     - name: MyLocalFolder
       type: FOLDER
       role: slave
       path: ./warehouse
-
     - name: MyRemoteFolder
       type: SFTP
       role: master
@@ -20,5 +18,4 @@ storage:
       path: ./warehouse
 
 lookup:
-
     - /home/kalif/Downloads

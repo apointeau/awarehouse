@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 
 # @Author: Antoine Pointeau <kalif>
 # @Date:   2017-10-22T16:54:20+02:00
@@ -12,7 +12,7 @@ import argparse
 sys.path.insert(0, "./lib")
 
 from awarehouse import AWContext
-from awarehouse.cli import afs
+from awarehouse.cli import filesys
 from awarehouse.cli import cleaner
 from awarehouse.cli import storage
 
@@ -21,7 +21,7 @@ def create_parser():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
-    afs.create_sub_parser(subparsers)
+    filesys.create_sub_parser(subparsers)
     cleaner.create_sub_parser(subparsers)
     storage.create_sub_parser(subparsers)
 
@@ -33,7 +33,6 @@ def main():
     if len(sys.argv) > 2:
         sys.argv.insert(2, '--')
     args = parser.parse_args()
-    print(args.handler)
 
     awc = AWContext()
     return args.handler(awc, args)

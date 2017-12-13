@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: SFTP.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T23:12:11+01:00
+# @Last modified time: 2017-12-13T01:28:10+01:00
 
 import os
 
@@ -30,10 +30,7 @@ class SFTP(storageAbstract):
         self.host = host
 
         self.params = kwargs
-        try:
-            self.connect()
-        except:
-            pass
+        self.connect()
 
     def connect(self):
         """
@@ -113,6 +110,13 @@ class SFTP(storageAbstract):
         cmd = "cp -r {0} {1}".format(self.__join(src), self.__join(dst))
         return self.conn.execute(cmd)
 
+    def rm(self, path):
+        path = self.__join(path)
+        try:
+            self.conn.remove(path)
+        except Exception:
+            self.conn.rmdir(path)
+
     def rmtree(self, path):
-        cmd = "rm -rf {1}".format(self.__join(path))
+        cmd = "rm -rf {0}".format(self.__join(path))
         return self.conn.execute(cmd)

@@ -3,29 +3,28 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: cmd_ls.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:48:23+01:00
+# @Last modified time: 2017-12-13T01:48:22+01:00
 
 import os
 
 
-def myprint(awc, args, dir, name):
-    print("  {0}".format(name))
-
-
-def directory_printer(awc, args, path):
-    if args.is_recursive:
+def printer(awc, path, recursive):
+    if recursive:
         print("{0}:".format(path))
+        subDirectories = []
     dirContent = awc.listdir(path)
-    subDirectories = []
     for name in dirContent:
-        myprint(awc, args, path, name)
-        subPath = os.path.join(path, name)
-        if awc.isdir(subPath):
-            subDirectories.append(subPath)
-    if args.is_recursive:
+        if recursive:
+            print("  {0}".format(name))
+            subPath = os.path.join(path, name)
+            if awc.isdir(subPath):
+                subDirectories.append(subPath)
+        else:
+            print("{0}".format(name))
+    if recursive:
         print("")
-    for sdir in subDirectories:
-        directory_printer(awc, args, sdir)
+        for sdir in subDirectories:
+            printer(awc, sdir, recursive)
 
 
 def call_handler(awc, args):
@@ -33,10 +32,14 @@ def call_handler(awc, args):
         args.PATH = ['/']
     for path in args.PATH:
         if awc.exists(path):
-            directory_printer(awc, args, path)
+            if not awc.isdir(path):
+                print(path)
+            else:
+                printer(awc, path, args.recursive)
         else:
-            print("ls: cannot access '{0}': No such file or directory".format(path))
-
+            print("error: '{0}' no such file or directory".format(path))
+        if len(args.PATH) > 1:
+            print("")
 
 def create_sub_parser(subparsers):
     msg = (
@@ -51,7 +54,7 @@ def create_sub_parser(subparsers):
     sp.add_argument(
         "-R", "--recursive",
         action="store_true",
-        dest="is_recursive"
+        dest="recursive"
     )
     sp.add_argument(
         "PATH",

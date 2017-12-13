@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: FOLDER.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T22:31:43+01:00
+# @Last modified time: 2017-12-13T01:29:12+01:00
 
 import os
 import shutil
@@ -83,5 +83,15 @@ class FOLDER(storageAbstract):
     def copy(self, src, dst):
         return shutil.copy(self.__join(src), self.__join(dst))
 
+    def rm(self, path):
+        path = self.__join(path)
+        try:
+            os.remove(path)
+        except Exception:
+            os.rmdir(path)
+
     def rmtree(self, path):
-        return shutil.rmtree(self.__join(path))
+        try:
+            self.rm(path)
+        except Exception:
+            shutil.rmtree(self.__join(path))

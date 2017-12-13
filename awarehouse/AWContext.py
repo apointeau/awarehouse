@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-23T00:51:15+01:00
+# @Last modified time: 2017-12-13T01:19:27+01:00
 
 from .AWConfig import AWConfig
 from .storage import storageFactory
@@ -19,7 +19,13 @@ class AWContext:
     the AWarehouse components.
     """
 
-    storages = []
+    master = False
+    slaves = []
+
+    commands = {
+        "everywhere": ["touch", "makedirs", "rm", "rmtree"],
+        "master": ["exists", "listdir", "isdir"]
+    }
 
     def __init__(self, conf=None):
         self.conf = conf if type(conf) == AWConfig else AWConfig(conf)
@@ -32,42 +38,24 @@ class AWContext:
         for elem in self.conf["storage"]:
             if not type(elem) == dict:
                 raise AWContextError("Configuration - invalid sub-component type in field 'storage'")
-            self.storages.append(factory.create_storage(**elem))
-        if len(self.masters) == 0:
+            new = factory.create_storage(**elem)
+            if new.role == "Master":
+                self.master = new
+            else:
+                self.slaves.append(new)
+        if not self.master:
             raise AWContextError("No storage with the role 'Master' found")
-
-    # STORAGE MANAGMENT #
-    @property
-    def masters(self):
-        return [s for s in self.storages if s.role == "Master"]
-
-    @property
-    def slaves(self):
-        return [s for s in self.storages if s.role == "Slaves"]
-
-    @property
-    def _connected_master(self):
-        return [s for s in self.masters if s.connected][0]
-
-
 
     # READ STORAGE CONTENT #
 
-    def exists(self, path):
-        return self._connected_master.exists(path)
-
-    def listdir(self, path):
-        return self._connected_master.listdir(path)
-
-    def isdir(self, path):
-        return self._connected_master.isdir(path)
-
-    # CREATE STORAGE CONTENT #
-
-    def touch(self, path):
-        for s in self.storages:
-            s.touch(path)
-
-    def makedirs(self, path):
-        for s in self.storages:
-            s.makedirs(path)
+    def __getattr__(self, name):
+        def method(*args, **kwargs):
+            if name in self.commands["everywhere"]:
+                getattr(self.master, name)(*args, **kwargs)
+                for s in self.slaves:
+                    getattr(s, name)(*args, **kwargs)
+            elif name in self.commands["master"]:
+                return getattr(self.master, name)(*args, **kwargs)
+            else:
+                raise AttributeError("AWContext instance has no attribute '{0}'".format(name))
+        return method
