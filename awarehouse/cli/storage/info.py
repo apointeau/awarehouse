@@ -3,15 +3,23 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: list_command.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-11-16T01:49:29+01:00
+# @Last modified time: 2017-12-20T22:02:32+01:00
+
+
+def printer(storage):
+    print("Name:   {0}".format(storage.name))
+    print("Role:   {0}".format(storage.role))
+    print("Status: {0}".format("connected" if storage.connected else "disconnected"))
+    print("")
 
 
 def call_handler(awc, args):
-    for s in awc.storages:
-        print("Name:   {0}".format(s.name))
-        print("Role:   {0}".format(s.role))
-        print("Status: {0}".format("connected" if s.connected else "disconnected"))
-        print("")
+    print("# --- MASTER --- #")
+    printer(awc.master)
+    print("# --- SLAVES --- #")
+    for storage in awc.slaves:
+        printer(storage)
+
 
 
 def create_sub_parser(subparsers):

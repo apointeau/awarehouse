@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: AWContext.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-12-13T01:19:27+01:00
+# @Last modified time: 2017-12-20T22:00:35+01:00
 
 from .AWConfig import AWConfig
 from .storage import storageFactory
@@ -46,7 +46,6 @@ class AWContext:
         if not self.master:
             raise AWContextError("No storage with the role 'Master' found")
 
-    # READ STORAGE CONTENT #
 
     def __getattr__(self, name):
         def method(*args, **kwargs):
