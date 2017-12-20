@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: FOLDER.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-12-13T01:29:12+01:00
+# @Last modified time: 2017-12-20T21:55:03+01:00
 
 import os
 import shutil
@@ -27,7 +27,7 @@ class FOLDER(storageAbstract):
                 os.mkdir(path)
             except:
                 raise storageError("'path' isn't a directory")
-        self.folderPath = os.path.abspath(path)
+        self.rootPath = os.path.abspath(path)
 
         self.kwargs = kwargs
         self.connect()
@@ -39,14 +39,23 @@ class FOLDER(storageAbstract):
         self.connected = False
 
     def __join(self, path):
+        # FILTER
         if ".." in path:
             raise storageError("path contains '..', operation not permitted")
-        if path[0] == "/":
-            path = "." + path
-        p = os.path.abspath(os.path.join(self.folderPath, path))
-        if not p.startswith(self.folderPath):
+        # SIMPLIFY / TRANSFORM
+        while "//" in path:
+            path = path.replace("//", "/")
+        if path.startswith("./"):
+            path = path[2:]
+        if path.startswith("/"):
+            path = path[1:]
+        # RESOLV
+        if not path or path == "":
+            return self.rootPath
+        path = os.path.abspath(os.path.join(self.rootPath, path))
+        if not path.startswith(self.rootPath):
             raise storageError("invalid path")
-        return p
+        return path
 
     # READ STORAGE CONTENT #
 
@@ -54,6 +63,7 @@ class FOLDER(storageAbstract):
         return os.path.exists(self.__join(path))
 
     def listdir(self, path):
+        print(self.__join(path))
         return os.listdir(self.__join(path))
 
     def isdir(self, path):
@@ -92,6 +102,6 @@ class FOLDER(storageAbstract):
 
     def rmtree(self, path):
         try:
-            self.rm(path)
+            os.remove(self.__join(path))
         except Exception:
             shutil.rmtree(self.__join(path))

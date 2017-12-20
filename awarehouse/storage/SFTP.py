@@ -3,7 +3,7 @@
 # @Email:  web.pointeau@gmail.com
 # @Filename: SFTP.py
 # @Last modified by:   kalif
-# @Last modified time: 2017-12-13T01:28:10+01:00
+# @Last modified time: 2017-12-20T21:55:04+01:00
 
 import os
 
@@ -66,10 +66,19 @@ class SFTP(storageAbstract):
         return self
 
     def __join(self, path):
+        # FILTER
         if ".." in path:
             raise storageError("path contains '..', operation not permitted")
-        if path[0] == "/":
-            path = "." + path
+        # SIMPLIFY / TRANSFORM
+        while "//" in path:
+            path = path.replace("//", "/")
+        if path.startswith("./"):
+            path = path[2:]
+        if path.startswith("/"):
+            path = path[1:]
+        # RESOLV
+        if not path or path == "":
+            return self.rootPath
         return os.path.join(self.rootPath, path)
 
     # READ STORAGE CONTENT #
@@ -78,6 +87,7 @@ class SFTP(storageAbstract):
         return self.conn.exists(self.__join(path))
 
     def listdir(self, path):
+        print(self.__join(path))
         return self.conn.listdir(self.__join(path))
 
     def isdir(self, path):
@@ -102,11 +112,11 @@ class SFTP(storageAbstract):
 
     # MANIPULATE STORAGE CONTENT #
 
-    def move(self, src, dst):
+    def move(self, src, dst):  # TODO security issue
         cmd = "mv {0} {1}".format(self.__join(src), self.__join(dst))
         return self.conn.execute(cmd)
 
-    def copy(self, src, dst):
+    def copy(self, src, dst):  # TODO security issue
         cmd = "cp -r {0} {1}".format(self.__join(src), self.__join(dst))
         return self.conn.execute(cmd)
 
@@ -117,6 +127,6 @@ class SFTP(storageAbstract):
         except Exception:
             self.conn.rmdir(path)
 
-    def rmtree(self, path):
+    def rmtree(self, path):  # TODO security issue
         cmd = "rm -rf {0}".format(self.__join(path))
         return self.conn.execute(cmd)
